@@ -37,4 +37,4 @@ lerna-debug.log*
 # env
 *.env
 
-src/common/env.ts
+/storage/**
