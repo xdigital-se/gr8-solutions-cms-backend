@@ -8,6 +8,7 @@ import { HttpStatus } from '@nestjs/common/enums';
 import * as bcrypt from 'bcrypt';
 import { Express } from 'express';
 import { join, resolve } from 'path';
+import { checkStorage } from '../common/diskStorage/disk-storage';
 
 @Injectable()
 export class UserService {
@@ -18,6 +19,8 @@ export class UserService {
     avatar: Express.Multer.File,
   ): Promise<User> {
     try {
+      await checkStorage();
+      
       let hashedPassword;
       const { password: plainPass } = createUserDto;
 
