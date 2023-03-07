@@ -18,8 +18,10 @@ export class UserService {
     avatar: Express.Multer.File,
   ): Promise<User> {
     try {
+      let hashedPassword;
       const { password: plainPass } = createUserDto;
-      const hashedPassword = await bcrypt.hash(plainPass, 10);
+
+      if (plainPass) hashedPassword = await bcrypt.hash(plainPass, 10);
 
       const avatarPath = avatar.path
         .replace(/storage/g, '')
@@ -30,7 +32,7 @@ export class UserService {
       const user = await this.prisma.user.create({
         data: {
           ...createUserDto,
-          password: hashedPassword,
+          password: hashedPassword ? hashedPassword : '',
           avatar: avatarPath,
           categoryId: createUserDto.categoryId,
         },
@@ -146,7 +148,7 @@ export class UserService {
 
   async remove(id: number) {
     try {
-     await this.prisma.user.delete({
+      await this.prisma.user.delete({
         where: {
           id,
         },
