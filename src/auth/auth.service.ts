@@ -15,7 +15,6 @@ export class AuthService {
     private jwtService: JwtService,
     private mailerService: MailerService,
     private prisma: PrismaService,
-    private configService: ConfigService
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -34,18 +33,21 @@ export class AuthService {
     if (user.is_two_factor) {
       const verify_code = uuidv4().slice(0, 4);
 
-      await this.usersService.update(user.id, {
-        two_factor_code: verify_code,
+      await this.prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          two_factor_code: verify_code,
+        },
       });
 
-     const email = await this.mailerService.sendMail({
+      await this.mailerService.sendMail({
         to: user.email,
-        from: 'narimisa@clposting.ca',
+        from: 'authentication@clposting.ca',
         subject: 'Your Login Code',
         html: `<h3> Here is Your Code: ${verify_code} </h3>`,
       });
-
-      console.log(email)
     }
     const access_token = this.jwtService.sign(payload);
     response.cookie('jwt', access_token, { httpOnly: true });
@@ -56,7 +58,7 @@ export class AuthService {
   }
 
   async verify(id: number, code: string) {
-    console.log(id)
+    console.log(id);
     const user = await this.prisma.user.findUnique({
       where: {
         id,

@@ -27,7 +27,6 @@ export class AppController {
     @Param('name') name: string,
     @Res() res: Response,
   ) {
-    // console.log(path);
     res.sendFile(name, { root: resolve(`storage/${folder}`) });
   }
 }

@@ -116,7 +116,7 @@ export class UserService {
             ...data,
             avatar: avatarPath ? avatarPath : user.avatar,
             password: await bcrypt.hash(new_password, 10),
-            categoryId: +categoryId,
+            categoryId: categoryId ? +categoryId : user.categoryId,
           },
         });
         delete user['password'];
@@ -138,7 +138,7 @@ export class UserService {
     } catch (error) {
       console.log(error);
       throw new HttpException(
-        'somethinf went wrong updating user',
+        'something went wrong updating user',
         HttpStatus.BAD_REQUEST,
       );
     }

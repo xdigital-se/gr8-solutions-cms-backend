@@ -47,7 +47,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
   @IsOptional()
   @ApiPropertyOptional()
-  categoryId?: number;
+  categoryId?: number = null;
 
   @IsOptional()
   @ApiPropertyOptional()

@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import config from './common/env';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
@@ -12,10 +11,14 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
+import { join } from 'path';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `${join('..', '.env')}`,
+    }),
     UserModule,
     AuthModule,
     BlogModule,
@@ -26,7 +29,7 @@ import { CategoryModule } from './category/category.module';
         ttl: configService.get<number>('RATE_LIMIT_SECOND'),
         limit: configService.get<number>('RATE_LIMIT_REQUEST'),
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     TagModule,
     CategoryModule,
