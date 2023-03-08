@@ -20,15 +20,12 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ParseFilePipe, MaxFileSizeValidator } from '@nestjs/common/pipes';
 import { avatarStorage } from '../common/diskStorage/disk-storage';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import {
-  ApiBody,
-  ApiHeader,
-  ApiResponse,
-} from '@nestjs/swagger';
+import { ApiBody, ApiHeader, ApiResponse } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { VerifyDto } from './dto/verify.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Get } from '@nestjs/common';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -97,5 +94,17 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async verify(@CurrentUser() user: any, @Body('code') code: string) {
     return this.authService.verify(user.userId, code);
+  }
+
+  @Get('logout')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiResponse({
+    schema: { example: { logout: true } },
+    description:
+      'delete the authorization header token when user clicks logout',
+  })
+  logout() {
+    return { logout: true };
   }
 }
