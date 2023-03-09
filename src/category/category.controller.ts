@@ -15,13 +15,13 @@ import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Category')
-@ApiBearerAuth()
 @Controller('category')
-@UseGuards(JwtAuthGuard)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
-
+  
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiBody({ type: CreateCategoryDto })
   create(@Body() createCategoryDto: CreateCategoryDto) {
     return this.categoryService.create(createCategoryDto);
@@ -41,6 +41,8 @@ export class CategoryController {
 
   @Patch(':id')
   @ApiBody({ type: UpdateCategoryDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
@@ -49,6 +51,8 @@ export class CategoryController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiBody({ type: UpdateCategoryDto })
   remove(@Param('id') id: string) {
     return this.categoryService.remove(+id);

@@ -29,13 +29,13 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('Users')
-@ApiBearerAuth()
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
+  
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiBody({
     type: CreateUserDto,
     description: 'send as form data and avatar as jpg/png',

@@ -8,7 +8,6 @@ import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 
 @ApiTags('Storage')
 @Controller('storage')
-@UseGuards(JwtAuthGuard)
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

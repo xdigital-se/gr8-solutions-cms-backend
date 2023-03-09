@@ -16,18 +16,18 @@ import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Tags')
-@ApiBearerAuth()
 @Controller('tags')
-@UseGuards(JwtAuthGuard)
 export class TagController {
   constructor(private readonly tagService: TagService) {}
-
+  
   @Post()
   @ApiBody({ type: CreateTagDto })
   @ApiResponse({
     schema: { example: { id: 1, name: 'tag name' } },
     status: 201,
   })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   create(@Body() createTagDto: CreateTagDto) {
     return this.tagService.create(createTagDto);
   }

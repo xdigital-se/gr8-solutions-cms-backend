@@ -32,13 +32,13 @@ import {
 } from '@nestjs/swagger';
 
 @ApiTags('Blogs')
-@ApiBearerAuth()
 @Controller('blogs')
-@UseGuards(JwtAuthGuard)
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @ApiBody({ type: CreateBlogDto })
   @ApiCreatedResponse({
     type: CreateBlogRes,
@@ -109,6 +109,7 @@ export class BlogController {
 
   @Patch(':id')
   @ApiParam({ name: 'id', description: 'id of blog to update' })
+  @UseGuards(JwtAuthGuard)
   @ApiBody({
     type: CreateBlogDto,
     description:
@@ -127,6 +128,7 @@ export class BlogController {
 
   @Delete(':id')
   @ApiParam({ name: 'id', description: 'id of the blog that gets deleted' })
+  @UseGuards(JwtAuthGuard)
   @ApiResponse({ type: CreateBlogDto, status: 200 })
   @HttpCode(200)
   remove(@Param('id') id: string) {
