@@ -33,7 +33,7 @@ export class BlogService {
           authorId: userId,
           cover_image: `${fullPath}`,
           tags: {
-            connect: [...tagIds],
+            connect: [...tagIds || []],
           },
         },
       });
@@ -121,7 +121,7 @@ export class BlogService {
   ): Promise<Blog> {
     const { tags, ...blog } = updateBlogDto;
 
-    const tagIds = tags.map((item) => {
+    const tagIds = tags?.map((item) => {
       return {
         id: parseInt(`${item.id}`),
       };
@@ -137,7 +137,7 @@ export class BlogService {
         ...blog,
         cover_image: `${fullPath}`,
         tags: {
-          connect: [...tagIds],
+          connect: [...tagIds || []],
         },
       },
     });
