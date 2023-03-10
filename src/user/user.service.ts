@@ -19,7 +19,6 @@ export class UserService {
     avatar: Express.Multer.File,
   ): Promise<User> {
     try {
-      // await checkStorage();
 
       let hashedPassword;
       const { password: plainPass } = createUserDto;
