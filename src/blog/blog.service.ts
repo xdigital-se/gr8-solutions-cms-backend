@@ -38,6 +38,7 @@ export class BlogService {
         },
       });
     } catch (error) {
+      console.log(error)
       throw new HttpException(
         `something went wrong creating blog`,
         HttpStatus.BAD_REQUEST,
