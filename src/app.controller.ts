@@ -26,6 +26,7 @@ export class AppController {
     @Param('name') name: string,
     @Res() res: Response,
   ) {
-    res.sendFile(name, { root: resolve(`storage/${folder}`) });
+    // console.log(resolve(`${process.cwd()}/storage/${folder}`))
+    res.sendFile(name, { root: resolve(`${process.cwd()}/storage/${folder}`) });
   }
 }

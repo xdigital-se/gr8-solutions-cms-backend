@@ -29,6 +29,8 @@ export class UserService {
         .replace(/storage/g, '')
         .replace(/\\/g, '/');
 
+      // console.log(resolve(`${process.cwd()}/${avatar.path}`))
+
       delete createUserDto['password_confirmation'];
 
       const user = await this.prisma.user.create({
