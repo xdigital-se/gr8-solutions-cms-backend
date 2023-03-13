@@ -20,6 +20,7 @@ import { MaxFileSizeValidator, ParseFilePipe } from '@nestjs/common/pipes';
 import { avatarStorage } from '../common/diskStorage/disk-storage';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common/enums';
+import { ContactUsDto } from './dto/contact-us.dto';
 import {
   ApiTags,
   ApiHeader,
@@ -32,7 +33,7 @@ import {
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  
+
   @Post()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
@@ -101,4 +102,16 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
-} 
+
+  @ApiBody({
+    type: ContactUsDto,
+    description: 'send contact us form',
+  })
+  @ApiResponse({
+    type: ContactUsDto,
+  })
+  @Post('contactus')
+  async contactUs(@Body() contactUs: ContactUsDto) {
+    return this.userService.contactus(contactUs);
+  }
+}

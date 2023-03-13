@@ -1,10 +1,11 @@
 import { Controller, Get, Post, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { AppService } from './app.service';
-import { ApiParam, ApiTags, ApiHeader } from '@nestjs/swagger';
+import { ApiParam, ApiTags, ApiHeader, ApiResponse } from '@nestjs/swagger';
 import { resolve } from 'path';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import * as svgCaptcha from 'svg-captcha';
 
 @ApiTags('Storage')
 @Controller('storage')
@@ -26,7 +27,32 @@ export class AppController {
     @Param('name') name: string,
     @Res() res: Response,
   ) {
-    // console.log(resolve(`${process.cwd()}/storage/${folder}`))
     res.sendFile(name, { root: resolve(`${process.cwd()}/storage/${folder}`) });
+  }
+
+  @ApiResponse({
+    schema: {
+      example: { picture: 'svg captcha pic', code: 'code in the pic' },
+    },
+    description: 'check if the code written is the as code in the pic',
+    status: 201,
+  })
+  @Get('captcha')
+  async captcha(@Res({ passthrough: true }) res: Response) {
+    const bgColor = '#' + (((1 << 24) * Math.random()) | 0).toString(16);
+    const option = {
+      size: 5,
+      noise: 2,
+      color: true,
+      background: bgColor,
+    };
+    const captcha = svgCaptcha.create(option);
+
+    res.type('svg');
+
+    res.status(200).send({
+      picture: captcha.data,
+      code: captcha.text.toLowerCase(),
+    });
   }
 }

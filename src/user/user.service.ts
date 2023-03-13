@@ -9,17 +9,23 @@ import * as bcrypt from 'bcrypt';
 import { Express } from 'express';
 import { join, resolve } from 'path';
 import { checkStorage } from '../common/diskStorage/disk-storage';
+import { ContactUsDto } from './dto/contact-us.dto';
+import { ConfigService } from '@nestjs/config';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private config: ConfigService,
+    private mailerService: MailerService,
+  ) {}
 
   async create(
     createUserDto: CreateUserDto,
     avatar: Express.Multer.File,
   ): Promise<User> {
     try {
-
       let hashedPassword;
       const { password: plainPass } = createUserDto;
 
@@ -160,5 +166,19 @@ export class UserService {
     } catch (error) {
       throw new HttpException('something went wrong removing user', 500);
     }
+  }
+  
+
+  async contactus(contactus: ContactUsDto) {
+    await this.mailerService.sendMail({
+      to: this.config.get<string>('COMPANY_EMAIL'),
+      from: "xdigital@clposting.ca",
+      subject: 'Contact Us',
+      html: `message: ${contactus.message} </br> Phone Number: ${contactus.phone_number}`,
+    });
+
+    return this.prisma.contactUs.create({
+      data: contactus,
+    });
   }
 }
