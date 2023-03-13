@@ -171,7 +171,7 @@ export class UserService {
 
   async contactus(contactus: ContactUsDto) {
     await this.mailerService.sendMail({
-      to: this.config.get<string>('COMPANY_EMAIL'),
+      to: /* this.config.get<string>('COMPANY_EMAIL') */ "b.kooshan69@gmail.com",
       from: "xdigital@clposting.ca",
       subject: 'Contact Us',
       html: `message: ${contactus.message} </br> Phone Number: ${contactus.phone_number}`,
