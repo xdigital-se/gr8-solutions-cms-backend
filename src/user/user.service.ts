@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { User } from '@prisma/client';
+import { Role, User } from '@prisma/client';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common/enums';
 import * as bcrypt from 'bcrypt';
@@ -57,8 +57,13 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<User[]> {
-    const users = await this.prisma.user.findMany();
+  async findAll(role: Role): Promise<User[]> {
+    const users = await this.prisma.user.findMany({
+      where: {
+        role,
+      },
+    });
+
     for (const user of users) delete user['password'];
     return users;
   }
@@ -167,12 +172,11 @@ export class UserService {
       throw new HttpException('something went wrong removing user', 500);
     }
   }
-  
 
   async contactus(contactus: ContactUsDto) {
     await this.mailerService.sendMail({
-      to: /* this.config.get<string>('COMPANY_EMAIL') */ "b.kooshan69@gmail.com",
-      from: "xdigital@clposting.ca",
+      to: /* this.config.get<string>('COMPANY_EMAIL') */ 'b.kooshan69@gmail.com',
+      from: 'xdigital@clposting.ca',
       subject: 'Contact Us',
       html: `message: ${contactus.message} </br> Phone Number: ${contactus.phone_number}`,
     });

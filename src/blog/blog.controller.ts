@@ -109,6 +109,7 @@ export class BlogController {
 
   @Patch(':id')
   @ApiParam({ name: 'id', description: 'id of blog to update' })
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiBody({
     type: CreateBlogDto,
@@ -130,6 +131,7 @@ export class BlogController {
   @ApiParam({ name: 'id', description: 'id of the blog that gets deleted' })
   @UseGuards(JwtAuthGuard)
   @ApiResponse({ type: CreateBlogDto, status: 200 })
+  @ApiBearerAuth()
   @HttpCode(200)
   remove(@Param('id') id: string) {
     return this.blogService.remove(+id);

@@ -21,7 +21,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
-  ],
+  ], 
   controllers: [UserController],
   providers: [UserService, PrismaService],
   exports: [UserService],

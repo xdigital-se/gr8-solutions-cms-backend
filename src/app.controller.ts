@@ -34,7 +34,7 @@ export class AppController {
     schema: {
       example: { picture: 'svg captcha pic', code: 'code in the pic' },
     },
-    description: 'check if the code written is the as code in the pic',
+    description: 'check if the code written by user is the same as code in the pic',
     status: 201,
   })
   @Get('captcha')

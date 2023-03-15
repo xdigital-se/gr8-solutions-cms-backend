@@ -28,6 +28,7 @@ import {
   ApiResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+import { Role } from '@prisma/client';
 
 @ApiTags('Users')
 @Controller('users')
@@ -65,8 +66,8 @@ export class UserController {
   @Get()
   @ApiResponse({ type: [CreateUserDto], status: 200 })
   @HttpCode(200)
-  findAll() {
-    return this.userService.findAll();
+  findAll(role?: Role) {
+    return this.userService.findAll(role);
   }
 
   @Get(':id')
@@ -83,6 +84,8 @@ export class UserController {
 
   @Patch(':id')
   @UseInterceptors(FileInterceptor('avatar', { storage: avatarStorage }))
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -98,6 +101,8 @@ export class UserController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);

@@ -15,9 +15,9 @@ export class SignupDto {
   @ApiProperty()
   last_name: string;
 
-  @IsOptional()
-  @ApiPropertyOptional({ enum: userRole })
-  role?: userRole;
+  @IsNotEmpty()
+  @ApiProperty({ enum: userRole })
+  role: userRole;
 
   @IsNotEmpty()
   @ApiProperty()

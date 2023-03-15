@@ -48,12 +48,16 @@ export class TagController {
   @Patch(':id')
   @ApiParam({ name: 'id', description: 'id of tag' })
   @ApiResponse({ type: CreateTagDto })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateTagDto: UpdateTagDto) {
     return this.tagService.update(+id, updateTagDto);
   }
 
   @Delete(':id')
   @ApiParam({ name: 'id', description: 'id of tag' })
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.tagService.remove(+id);
   }
