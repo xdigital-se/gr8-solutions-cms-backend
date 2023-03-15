@@ -50,9 +50,11 @@ export class AppController {
 
     res.type('svg');
 
-    res.status(200).send({
-      picture: captcha.data,
-      code: captcha.text.toLowerCase(),
-    });
+    res.status(200).send(captcha.data)
+
+    // res.status(200).send({
+    //   picture: captcha.data,
+    //   code: captcha.text.toLowerCase(),
+    // });
   }
 }

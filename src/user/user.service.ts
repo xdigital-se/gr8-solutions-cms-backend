@@ -65,11 +65,19 @@ export class UserService {
   }
 
   async findAllTeam(): Promise<User[]> {
-    return await this.prisma.user.findMany({
+    const team = await this.prisma.user.findMany({
       where: {
         role: Role.TEAM,
       },
     });
+
+    for (const user of team) {
+      delete user['password'];
+      delete user['is_two_factor'];
+      delete user['two_factor_code'];
+    }
+
+    return team;
   }
 
   async findOne(id: number): Promise<User> {

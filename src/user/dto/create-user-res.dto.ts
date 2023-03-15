@@ -7,7 +7,7 @@ export enum userRole {
   USER = 'USER',
 }
 
-export class CreateUserDto {
+export class CreateUserResDto {
   @IsOptional()
   @ApiPropertyOptional()
   avatar?: string;
@@ -19,10 +19,6 @@ export class CreateUserDto {
   @IsOptional()
   @ApiPropertyOptional()
   last_name?: string;
-
-  @IsOptional()
-  @ApiProperty()
-  password?: string = "1234";
 
   @IsNotEmpty()
   @IsEmail()
@@ -41,14 +37,13 @@ export class CreateUserDto {
   @ApiPropertyOptional()
   address?: string;
 
-  @IsOptional()
-  @ApiProperty()
-  is_two_factor?: boolean;
+//   @IsOptional()
+//   @ApiProperty()
+//   is_two_factor?: boolean;
 
   @IsOptional()
   @ApiProperty()
   categoryId?: number;
-
 
   @IsOptional()
   @ApiPropertyOptional()

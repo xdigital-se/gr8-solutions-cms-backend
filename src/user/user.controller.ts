@@ -29,6 +29,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
+import { CreateUserResDto } from './dto/create-user-res.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -43,7 +44,7 @@ export class UserController {
     description:
       'send as form data and avatar as jpg/png / for creating team members send role as TEAM',
   })
-  @ApiResponse({ type: CreateUserDto, status: 201 })
+  @ApiResponse({ type: CreateUserResDto, status: 201 })
   @UseInterceptors(FileInterceptor('avatar', { storage: avatarStorage }))
   @HttpCode(201)
   async create(
@@ -65,7 +66,7 @@ export class UserController {
   }
 
   @Get()
-  @ApiResponse({ type: [CreateUserDto], status: 200 })
+  @ApiResponse({ type: [CreateUserResDto], status: 200 })
   @HttpCode(200)
   findAll() {
     return this.userService.findAll();
@@ -73,7 +74,7 @@ export class UserController {
 
   @Get('team')
   @ApiResponse({
-    type: [CreateUserDto],
+    type: [CreateUserResDto],
     status: 200,
     description: 'for showing all the team members',
   })
