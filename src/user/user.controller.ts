@@ -40,7 +40,8 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   @ApiBody({
     type: CreateUserDto,
-    description: 'send as form data and avatar as jpg/png',
+    description:
+      'send as form data and avatar as jpg/png / for creating team members send role as TEAM',
   })
   @ApiResponse({ type: CreateUserDto, status: 201 })
   @UseInterceptors(FileInterceptor('avatar', { storage: avatarStorage }))
@@ -66,8 +67,19 @@ export class UserController {
   @Get()
   @ApiResponse({ type: [CreateUserDto], status: 200 })
   @HttpCode(200)
-  findAll(role?: Role) {
-    return this.userService.findAll(role);
+  findAll() {
+    return this.userService.findAll();
+  }
+
+  @Get('team')
+  @ApiResponse({
+    type: [CreateUserDto],
+    status: 200,
+    description: 'for showing all the team members',
+  })
+  @HttpCode(200)
+  findAllTeam() {
+    return this.userService.findAllTeam();
   }
 
   @Get(':id')
