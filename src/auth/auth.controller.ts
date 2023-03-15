@@ -66,7 +66,7 @@ export class AuthController {
   @Post('login')
   @ApiBody({
     type: LoginDto,
-    description: 'redirecet to api/auth/verify if is_two_factor is true',
+    description: 'set the access_token to auth header of requests',
   })
   @ApiResponse({
     schema: { example: { is_two_factor: false, access_token: 'token' } },
@@ -79,22 +79,22 @@ export class AuthController {
     return this.authService.login(user, res);
   }
 
-  @Post('verify')
-  @ApiBody({
-    type: VerifyDto,
-    description: 'user will type a code sent to his email',
-  })
-  @ApiHeader({
-    name: 'Authorization',
-    description:
-      'put the Jwt token in the auth header like this "bearer ${token}"',
-  })
-  @ApiResponse({ schema: { example: { success: true } } })
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  async verify(@CurrentUser() user: any, @Body('code') code: string) {
-    return this.authService.verify(user.userId, code);
-  }
+  // @Post('verify')
+  // @ApiBody({
+  //   type: VerifyDto,
+  //   description: 'user will type a code sent to his email',
+  // })
+  // @ApiHeader({
+  //   name: 'Authorization',
+  //   description:
+  //     'put the Jwt token in the auth header like this "bearer ${token}"',
+  // })
+  // @ApiResponse({ schema: { example: { success: true } } })
+  // @ApiBearerAuth()
+  // @UseGuards(JwtAuthGuard)
+  // async verify(@CurrentUser() user: any, @Body('code') code: string) {
+  //   return this.authService.verify(user.userId, code);
+  // }
 
   @Get('logout')
   @UseGuards(JwtAuthGuard)

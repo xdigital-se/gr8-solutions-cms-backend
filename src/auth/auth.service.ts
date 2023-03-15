@@ -30,29 +30,29 @@ export class AuthService {
   async login(user: any, response: Response) {
     const payload = { email: user.email, sub: user.id };
 
-    if (user.is_two_factor) {
-      const verify_code = uuidv4().slice(0, 4);
+    // if (user.is_two_factor) {
+    //   const verify_code = uuidv4().slice(0, 4);
 
-      await this.prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          two_factor_code: verify_code,
-        },
-      });
+    //   await this.prisma.user.update({
+    //     where: {
+    //       id: user.id,
+    //     },
+    //     data: {
+    //       two_factor_code: verify_code,
+    //     },
+    //   });
 
-      await this.mailerService.sendMail({
-        to: user.email,
-        from: 'authentication@clposting.ca',
-        subject: 'Your Login Code',
-        html: `<h3> Here is Your Code: ${verify_code} </h3>`,
-      });
-    }
+    //   await this.mailerService.sendMail({
+    //     to: user.email,
+    //     from: 'authentication@clposting.ca',
+    //     subject: 'Your Login Code',
+    //     html: `<h3> Here is Your Code: ${verify_code} </h3>`,
+    //   });
+    // }
     const access_token = this.jwtService.sign(payload);
     response.cookie('jwt', access_token, { httpOnly: true });
     return {
-      is_two_factor_enabled: user.is_two_factor,
+      // is_two_factor_enabled: user.is_two_factor,
       access_token,
     };
   }
