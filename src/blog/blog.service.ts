@@ -67,8 +67,19 @@ export class BlogService {
           ],
         },
         include: {
-          tags: true,
-          author: true,
+          tags: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          author: {
+            select: {
+              id: true,
+              first_name: true,
+              last_name: true,
+            },
+          },
         },
         orderBy: {
           createdAt: 'desc',

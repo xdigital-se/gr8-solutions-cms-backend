@@ -14,6 +14,10 @@ export class CreateBlogDto {
 
   @IsNotEmpty()
   @ApiProperty()
+  description: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
   content: string;
 
   @IsBoolean()

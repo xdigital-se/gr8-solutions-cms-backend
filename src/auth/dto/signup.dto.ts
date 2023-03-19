@@ -17,7 +17,7 @@ export class SignupDto {
 
   @IsNotEmpty()
   @ApiProperty({ enum: userRole })
-  role: userRole;
+  role: userRole
 
   @IsNotEmpty()
   @ApiProperty()
