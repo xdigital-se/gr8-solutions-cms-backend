@@ -50,6 +50,7 @@ export class UserService {
 
       delete user['password'];
       delete user['is_two_factor'];
+      delete user['two_factor_code'];
       return user;
     } catch (error) {
       console.log(error);
@@ -149,6 +150,8 @@ export class UserService {
           },
         });
         delete user['password'];
+        delete user['is_two_factor'];
+        delete user['two_factor_code'];
         return user;
       } else {
         user = await this.prisma.user.update({
@@ -162,6 +165,8 @@ export class UserService {
           },
         });
         delete user['password'];
+        delete user['is_two_factor'];
+        delete user['two_factor_code'];
         return user;
       }
     } catch (error) {

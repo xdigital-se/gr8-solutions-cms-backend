@@ -24,7 +24,16 @@ export class CategoryService {
         id,
       },
       include: {
-        user: true,
+        user: {
+          select: {
+            id: true,
+            avatar: true,
+            first_name: true,
+            last_name: true,
+            job_title: true,
+            bio: true,
+          },
+        },
       },
     });
   }

@@ -33,12 +33,12 @@ export class BlogService {
           authorId: userId,
           cover_image: `${fullPath}`,
           tags: {
-            connect: [...tagIds || []],
+            connect: [...(tagIds || [])],
           },
         },
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new HttpException(
         `something went wrong creating blog`,
         HttpStatus.BAD_REQUEST,
@@ -95,23 +95,68 @@ export class BlogService {
         createdAt: 'desc',
       },
       include: {
-        tags: true,
-        author: true,
+        tags: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        author: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+          },
+        },
       },
       take: 3,
     });
   }
 
-  async findOne(id: number): Promise<Blog> {
-    return await this.prisma.blog.findUnique({
+  async findOne(id: number): Promise<{
+    blog: Blog;
+    relatedBlogs: Blog[];
+  }> {
+    const blog = await this.prisma.blog.findUnique({
       where: {
         id,
       },
       include: {
-        tags: true,
-        author: true,
+        tags: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        author: {
+          select: {
+            id: true,
+            first_name: true,
+            last_name: true,
+          },
+        },
       },
     });
+
+    const relatedTag = blog.tags[0].name || null;
+
+    const relatedBlogs = await this.prisma.blog.findMany({
+      where: {
+        tags: {
+          some: {
+            name: {
+              contains: relatedTag,
+            },
+          },
+        },
+      },
+      take: 3,
+    });
+
+    return {
+      blog,
+      relatedBlogs,
+    };
   }
 
   async update(
@@ -127,7 +172,9 @@ export class BlogService {
       };
     });
 
-    const fullPath = cover_image.path.replace(/storage/g, '').replace(/\\/g, '/');
+    const fullPath = cover_image.path
+      .replace(/storage/g, '')
+      .replace(/\\/g, '/');
 
     return await this.prisma.blog.update({
       where: {
@@ -137,7 +184,7 @@ export class BlogService {
         ...blog,
         cover_image: `${fullPath}`,
         tags: {
-          connect: [...tagIds || []],
+          connect: [...(tagIds || [])],
         },
       },
     });

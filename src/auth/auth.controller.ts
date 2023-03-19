@@ -69,7 +69,7 @@ export class AuthController {
     description: 'set the access_token to auth header of requests',
   })
   @ApiResponse({
-    schema: { example: { is_two_factor: false, access_token: 'token' } },
+    schema: { example: { access_token: 'token' } },
   })
   @UseGuards(LocalAuthGuard)
   async login(

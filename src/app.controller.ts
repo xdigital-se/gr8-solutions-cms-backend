@@ -32,7 +32,7 @@ export class AppController {
 
   @ApiResponse({
     schema: {
-      example: { picture: 'svg captcha pic', code: 'code in the pic' },
+      example: { picture: 'svg captcha pic' },
     },
     description: 'check if the code written by user is the same as code in the pic for Contact Us Form',
     status: 201,
