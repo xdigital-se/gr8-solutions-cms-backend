@@ -7,7 +7,10 @@ import helmet from 'helmet';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.use(helmet());
+  app.use(helmet({
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false
+  }));
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
