@@ -146,7 +146,7 @@ export class UserService {
             ...data,
             avatar: avatarPath ? avatarPath : user.avatar,
             password: await bcrypt.hash(new_password, 10),
-            categoryId: categoryId ? +categoryId : user.categoryId,
+            // categoryId: NaN(categoryId) ? +categoryId : user.categoryId,
           },
         });
         delete user['password'];
@@ -161,7 +161,7 @@ export class UserService {
           data: {
             ...data,
             avatar: avatar?.path ? avatar.path : user.avatar,
-            categoryId: +categoryId,
+            // categoryId: +categoryId,
           },
         });
         delete user['password'];
