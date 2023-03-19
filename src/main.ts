@@ -11,11 +11,7 @@ async function bootstrap() {
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: false
   }));
-  app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
+  app.enableCors();
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
