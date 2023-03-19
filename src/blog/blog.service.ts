@@ -24,7 +24,7 @@ export class BlogService {
       for (const tag of tags) {
         let existTag: unknown;
 
-        existTag = await this.prisma.tag.findUnique({
+        existTag = await this.prisma.tag.findFirst({
           where: {
             name: tag.name,
           },
