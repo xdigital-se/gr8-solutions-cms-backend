@@ -19,7 +19,28 @@ export class BlogService {
     try {
       const { tags, ...blog } = createBlogDto;
 
-      const tagIds = tags?.map((item) => {
+      const foundTag = [];
+
+      for (const tag of tags) {
+        let existTag: unknown;
+
+        existTag = await this.prisma.tag.findUnique({
+          where: {
+            name: tag.name,
+          },
+        });
+
+        if (!existTag)
+          existTag = await this.prisma.tag.create({
+            data: { ...tag },
+          });
+
+        foundTag.push(existTag);
+      }
+
+      console.log(foundTag);
+
+      const tagIds = foundTag?.map((item) => {
         return {
           id: parseInt(`${item.id}`),
         };

@@ -8,11 +8,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.use(helmet());
-  app.enableCors();
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
   app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
-    .setTitle('CMS Backend')
+    .setTitle('gr8 solutions backend')
     .setDescription('API description')
     .setVersion('1.0')
     .addTag('backend')
