@@ -160,7 +160,7 @@ export class UserService {
           },
           data: {
             ...data,
-            avatar: avatar?.path ? avatar.path : user.avatar,
+            avatar: avatarPath ? avatarPath : user.avatar,
             // categoryId: +categoryId,
           },
         });
